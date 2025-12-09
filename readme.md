@@ -10,6 +10,8 @@ They should work without issues.
 You can convert images by changing the paths in the main file and uncommenting the wanted functions.
 Then copy the text from the output file into the "image_data.py" file in your game folder.
 
+The files with the run length encoding and the ones without the encoding are not compatible.\
+Please only use one version at once. :)
 
 
 (I know, this is a great readme.)
