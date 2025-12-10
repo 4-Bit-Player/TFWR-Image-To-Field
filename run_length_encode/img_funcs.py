@@ -1,7 +1,7 @@
 import math, cv2
 import numpy as np
 from PIL import Image
-
+from img_encoder import run_length_encode, get_game_decoder_string
 
 def convert_gif(gif_path:str, result_file_name:str="result_gif.txt") -> None:
     ### Converting a video
@@ -90,36 +90,6 @@ def get_gif(path:str):
     return frames
 
 
-default_decoder = {}
-dynamic_decoder = {}
-
-def run_length_encode(line_arr:list[str]) -> list[str]:
-    default_encoder = {1:"a",2:"b",3:"c",4:"d",5:"e",6:"f",7:"g",8:"h",9:"i",10:"j",11:"k",12:"l",13:"m",14:"n",15:"o",16:"p",17:"q",18:"r",19:"s",20:"t",21:"u",22:"v",23:"w",24:"x",25:"y",26:"z",27:"A",28:"B",29:"C",30:"D",31:"E",32:"F",33:"G",34:"H",35:"I",36:"J",37:"K",38:"L",39:"M",40:"N",41:"O",42:"P",43:"Q",44:"R",45:"S",46:"T",47:"U",48:"V",49:"W",50:"X",51:"Y",52:"Z",53:"0",54:"1",55:"2",56:"3",57:"4",58:"5",59:"6",60:"7",61:"8",62:"9",63:"ö",64:"ä",65:"ü",66:"#",67:"$",68:"%",69:"&",70:"'",71:"(",72:")",73:"*",74:"+",75:",",76:"-",77:".",78:"/",79:":",80:";",81:"<",82:"=",83:">",84:"?",85:"@",86:"[",87:"Ö",88:"]",89:"^",90:"_",91:"`",92:"{",93:"|",94:"}",95:"~",96:"!",}
-    out:list[str]=[]
-
-    for line in line_arr:
-        new_line:list[str] = []
-        char = line[0]
-        count = 0
-        for i in range(len(line)):
-            if line[i] == '"':
-                continue
-            if line[i] == char:
-                count += 1
-                if count == len(default_encoder):
-                    new_line.append(f"{default_encoder[count]}{char}")
-                    count = 0
-                continue
-            if count != 0:
-                new_line.append(f"{default_encoder[count]}{char}")
-            char = line[i]
-            count = 1
-        if count != 0:
-            new_line.append(f"{default_encoder[count]}{char}")
-        out.append('"'+ "".join(new_line) + '"')
-    return out
-
-
 def get_img(path:str, rotation:float=0.0) -> list[list[int]]:
     if rotation != 0:
         img = Image.open(path).rotate(rotation, fillcolor=255).convert("L").resize((32, 32))
@@ -145,8 +115,8 @@ def convert_to_str(arr:list[list[int]]) -> list[str]:
 
 
 def save_list(to_save:list[str], img_name:str="result_img2.txt", add_func_prefix=True) -> None:
-
-    func_beginning = "def get_img():\n    return "
+    decoder = get_game_decoder_string()
+    func_beginning = decoder + "def get_img():\n    return "
     data = "[" + ",\n".join(to_save) + "]"
 
     if add_func_prefix:
@@ -158,7 +128,6 @@ def save_list(to_save:list[str], img_name:str="result_img2.txt", add_func_prefix
 
 def nested_list_to_str(nested_list:list) -> str:
     return ",\n".join(nested_list)
-
 
 
 def mix_lists(base_list:list[list[str]])->list[list[str]]:
