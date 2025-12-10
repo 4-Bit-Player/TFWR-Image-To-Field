@@ -120,17 +120,17 @@ def imprecise_sleep(ticks):
     # minimum 6 ticks
     if ticks < 35:
         return sleep_tick(ticks-3)
-    c = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]
-    if ticks > 145:
-        d = []
-        for _ in range(5):
-            d += c
-        required = (ticks-145) // 100
-        for _ in range(required):
-            a = d[:]
 
-        ticks -= 110 + 100 * required
+    if ticks > 211:
+        set_execution_speed(-1)
+        if ticks < 240:
+            return sleep_tick(ticks-207)
+        if ticks > 412:
+            set_execution_speed(-1)
+            return sleep_tick(ticks-409)
+        ticks -= 205
 
+    c = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15, 16, 17, 18, 19]
     required = (ticks - 33) // 20
     rest = ticks - required*20 - 33
     for _ in range(required):

@@ -14,7 +14,7 @@ def get_video(path:str) -> list[list[int]]:
         if success:
             img = Image.fromarray(frame)
 
-            frame = img.convert("L").resize((32,32))
+            frame = img.convert("L").resize((32,32), resample=Image.Resampling.LANCZOS)
             frames.append(np.array(frame).tolist())
             video.read()
 
