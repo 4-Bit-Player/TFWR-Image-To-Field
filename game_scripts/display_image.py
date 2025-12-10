@@ -130,24 +130,15 @@ def imprecise_sleep(ticks):
 
 
 
-
-
-
-
-
-def sub_func(lines, direction, repeats=1):
+def sub_func(lines, direction, repeats=1, delay=0):
     start_tick = get_tick_count()
     if direction == West:
         move(West)
         iterator = range(len(lines[0]) - 1, -1, -1)
     else:
         iterator = field_range
-    while num_drones() != 32:
-        pass
-    if get_tick_count() - start_tick > 250:
-        imprecise_sleep(400)
-    else:
-        sleep_tick(200 - (get_tick_count() - start_tick))
+    if delay != 0:
+        long_sleep(delay)
 
     if repeats < 0:
         while True:
@@ -169,16 +160,19 @@ def _plant_iterator(line, iterator, move_dir):
 
 def display_image(img_list, repeats=1):
     clear()
-    for i in range(len(img_list) - 1):
+    list_len = len(img_list)
+    for i in range(list_len-1):
         move(South)
         current_line = img_list[i]
         if i % 2:
+            delay = (list_len-i)*400 - 600
             direction = West
         else:
+            delay = (list_len-i)*400 - 400
             direction = East
 
         def drone_func():
-            sub_func(current_line, direction, repeats)
+            sub_func(current_line, direction, repeats, delay)
 
         spawn_drone(drone_func)
 
