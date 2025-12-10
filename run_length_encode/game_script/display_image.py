@@ -1,4 +1,4 @@
-from img_data import get_img
+from img_data import get_img, get_decoder
 
 
 
@@ -87,7 +87,6 @@ def should_sunflower():
         plant(Entities.Sunflower)
 
 
-FUNC_LOOKUP = [should_carrots, should_soil_tree, should_grass_tree, should_soil, should_grass_bush, should_sunflower, should_soil_grass, should_grass_grass, should_pumpkin]
 FUNC_DICT = {
     "0": should_carrots,
     "1": should_soil_tree,
@@ -99,13 +98,7 @@ FUNC_DICT = {
     "7": should_grass_grass,
     "8": should_pumpkin,
 }
-DECODER = {"a":1,"b":2,"c":3,"d":4,"e":5,"f":6,"g":7,"h":8,"i":9,"j":10,"k":11,"l":12,"m":13,"n":14,"o":15,"p":16,
-           "q":17,"r":18,"s":19,"t":20,"u":21,"v":22,"w":23,"x":24,"y":25,"z":26,"A":27,"B":28,"C":29,"D":30,"E":31,
-           "F":32,"G":33,"H":34,"I":35,"J":36,"K":37,"L":38,"M":39,"N":40,"O":41,"P":42,"Q":43,"R":44,"S":45,"T":46,
-           "U":47,"V":48,"W":49,"X":50,"Y":51,"Z":52,"0":53,"1":54,"2":55,"3":56,"4":57,"5":58,"6":59,"7":60,"8":61,
-           "9":62,"ö":63,"ä":64,"ü":65,"#":66,"$":67,"%":68,"&":69,"'":70,"(":71,")":72,"*":73,"+":74,",":75,"-":76,
-           ".":77,"/":78,":":79,";":80,"<":81,"=":82,">":83,"?":84,"@":85,"[":86,"Ö":87,"]":88,"^":89,"_":90,"`":91,
-           "{":92,"|":93,"}":94,"~":95,"!":96,}
+DECODER = {}
 
 ##### Boch Sleep functions copied from my base library.
 def sleep_tick(ticks):
@@ -186,6 +179,8 @@ def _dec_plant_iterator(line, iterator, move_dir):
 
 
 def display_image(img_list, repeats=1):
+    global DECODER
+    DECODER = get_decoder()
     clear()
     for i in range(len(img_list)-1):
         move(South)
@@ -201,7 +196,7 @@ def display_image(img_list, repeats=1):
     move(South)
     sub_func(img_list[-1], West, repeats)
     while num_drones() != 1:
-        continue
+        pass
 
 
 if __name__ == '__main__':
