@@ -68,7 +68,7 @@ def save_list(to_save:list[str], img_name:str="result_img2.txt", add_func_prefix
     if add_func_prefix:
         data = func_beginning + data
 
-    with open(img_name, "w") as file:
+    with open(img_name, "w", encoding="utf-8") as file:
         file.write(data)
 
 
